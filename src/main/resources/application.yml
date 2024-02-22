@@ -1,0 +1,32 @@
+app:
+  kafka:
+    topic-in: users
+    topic-out: resultado
+  gateway:
+      fare:
+        base-url: http://localhost:3334
+        url-path: /v0/flights/on-header
+      booking:
+        base-url: http://localhost:3334
+        url-path: /v0/flights/bookings
+server:
+  port: 9000
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: "app-consumer"
+      client-id: "app-consumer"
+      max-poll-records: 1
+      auto-offset-reset: earliest
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: 1
+    listener:
+      ack-mode: MANUAL_IMMEDIATE
+pom:
+  version: 1.0.2
